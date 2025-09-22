@@ -1,0 +1,435 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CampusAI Admin - Multi-Theme Design System
+Three distinct themes: Modern Minimalist Dark, Futuristic Cyber-Tech, Classic Academia
+All colors MUST be HSL for consistency.
+*/
+
+@layer base {
+  /* MODERN MINIMALIST DARK THEME (Default) */
+  :root, .minimalist {
+    /* Dark Minimalist Color Palette */
+    --background: 222 47% 11%; /* deep charcoal */
+    --foreground: 210 40% 96%;
+
+    --card: 222 47% 15%;
+    --card-foreground: 210 40% 96%;
+
+    --popover: 222 47% 15%;
+    --popover-foreground: 210 40% 96%;
+
+    /* Muted Blues & Teals */
+    --primary: 199 89% 48%; /* teal-500 */
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 199 89% 42%;
+    --primary-glow: 199 89% 68%;
+
+    --secondary: 210 40% 20%; /* warm gray */
+    --secondary-foreground: 210 40% 96%;
+    --secondary-hover: 210 40% 25%;
+
+    --accent: 217 91% 60%; /* muted blue */
+    --accent-foreground: 0 0% 100%;
+    --accent-hover: 217 91% 55%;
+
+    --muted: 215 28% 17%;
+    --muted-foreground: 215 16% 47%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 215 28% 25%;
+    --input: 215 28% 20%;
+    --ring: 199 89% 48%;
+
+    --radius: 1rem; /* soft rounded corners */
+
+    /* Minimalist Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-glow)) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(var(--accent)) 100%);
+    --gradient-admin: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 50%, hsl(var(--secondary)) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(215 28% 12%) 100%);
+
+    /* Subtle Shadows */
+    --shadow-card: 0 4px 20px hsl(0 0% 0% / 0.15), 0 1px 3px hsl(0 0% 0% / 0.1);
+    --shadow-hover: 0 8px 30px hsl(var(--primary) / 0.2), 0 4px 12px hsl(0 0% 0% / 0.15);
+    --shadow-glow: 0 0 30px hsl(var(--primary-glow) / 0.3);
+
+    /* Typography */
+    --font-primary: 'Inter', sans-serif;
+    --font-mono: 'Fira Code', monospace;
+  }
+
+  /* FUTURISTIC CYBER-TECH THEME */
+  .cyber {
+    /* Cyber Dark Palette with Neon Accents */
+    --background: 240 10% 4%; /* pure dark */
+    --foreground: 120 100% 85%;
+
+    --card: 240 10% 8%;
+    --card-foreground: 120 100% 85%;
+
+    --popover: 240 10% 8%;
+    --popover-foreground: 120 100% 85%;
+
+    /* Neon Electric Colors */
+    --primary: 195 100% 50%; /* electric blue */
+    --primary-foreground: 240 10% 4%;
+    --primary-hover: 195 100% 45%;
+    --primary-glow: 195 100% 70%;
+
+    --secondary: 300 100% 50%; /* electric magenta */
+    --secondary-foreground: 240 10% 4%;
+    --secondary-hover: 300 100% 45%;
+
+    --accent: 120 100% 50%; /* electric green */
+    --accent-foreground: 240 10% 4%;
+    --accent-hover: 120 100% 45%;
+
+    --muted: 240 10% 12%;
+    --muted-foreground: 120 100% 70%;
+
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 240 10% 4%;
+
+    --border: 195 100% 50%;
+    --input: 240 10% 12%;
+    --ring: 195 100% 50%;
+
+    --radius: 0.25rem; /* sharp angular corners */
+
+    /* Cyber Gradients with Glow */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(var(--primary)) 100%);
+    --gradient-admin: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 50%, hsl(var(--secondary)) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(240 10% 6%) 100%);
+
+    /* Intense Glowing Shadows */
+    --shadow-card: 0 4px 20px hsl(var(--primary) / 0.3), 0 0 10px hsl(var(--primary) / 0.2);
+    --shadow-hover: 0 0 40px hsl(var(--primary) / 0.6), 0 0 20px hsl(var(--accent) / 0.4);
+    --shadow-glow: 0 0 50px hsl(var(--primary-glow) / 0.8);
+
+    /* Typography */
+    --font-primary: 'Orbitron', monospace;
+    --font-mono: 'Fira Code', monospace;
+  }
+
+  /* CLASSIC ACADEMIA THEME */
+  .academia {
+    /* Warm Academic Palette */
+    --background: 45 25% 95%; /* cream/parchment */
+    --foreground: 30 25% 15%;
+
+    --card: 45 50% 98%;
+    --card-foreground: 30 25% 15%;
+
+    --popover: 45 50% 98%;
+    --popover-foreground: 30 25% 15%;
+
+    /* Rich Academic Colors */
+    --primary: 150 50% 25%; /* deep forest green */
+    --primary-foreground: 45 50% 98%;
+    --primary-hover: 150 50% 20%;
+    --primary-glow: 150 50% 45%;
+
+    --secondary: 0 50% 35%; /* burgundy */
+    --secondary-foreground: 45 50% 98%;
+    --secondary-hover: 0 50% 30%;
+
+    --accent: 35 80% 45%; /* warm gold */
+    --accent-foreground: 30 25% 15%;
+    --accent-hover: 35 80% 40%;
+
+    --muted: 45 25% 90%;
+    --muted-foreground: 30 25% 40%;
+
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 45 50% 98%;
+
+    --border: 30 25% 80%;
+    --input: 45 25% 96%;
+    --ring: 150 50% 25%;
+
+    --radius: 0.5rem; /* traditional rounded */
+
+    /* Academic Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-glow)) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(var(--accent)) 100%);
+    --gradient-admin: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 50%, hsl(var(--accent)) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(45 25% 96%) 100%);
+
+    /* Elegant Paper Shadows */
+    --shadow-card: 0 4px 12px hsl(30 25% 15% / 0.1), 0 2px 4px hsl(30 25% 15% / 0.06);
+    --shadow-hover: 0 8px 25px hsl(var(--primary) / 0.15), 0 4px 12px hsl(30 25% 15% / 0.1);
+    --shadow-glow: 0 0 25px hsl(var(--accent) / 0.3);
+
+    /* Typography */
+    --font-primary: 'Georgia', serif;
+    --font-mono: 'Fira Code', monospace;
+  }
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    /* Dark Mode for Smart Academic Admin */
+    --background: 222.2 84% 4.9%; /* slate-950 */
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 217.2 91.2% 64%;
+    --primary-glow: 217.2 91.2% 75%;
+
+    --secondary: 188.7 85.4% 43.1%;
+    --secondary-foreground: 0 0% 100%;
+    --secondary-hover: 188.7 85.4% 48%;
+
+    --accent: 262.1 83.3% 67.8%;
+    --accent-foreground: 0 0% 100%;
+    --accent-hover: 262.1 83.3% 72%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 217.2 91.2% 59.8%;
+
+    /* Dark Mode Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--accent)));
+    --gradient-admin: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)), hsl(var(--accent)));
+    --gradient-card: linear-gradient(145deg, hsl(217.2 32.6% 17.5% / 0.9), hsl(217.2 32.6% 15% / 0.8));
+
+    /* Dark Mode Shadows */
+    --shadow-card: 0 4px 6px -1px hsl(0 0% 0% / 0.3), 0 2px 4px -1px hsl(0 0% 0% / 0.2);
+    --shadow-hover: 0 8px 25px -5px hsl(var(--primary) / 0.25), 0 4px 12px -2px hsl(0 0% 0% / 0.3);
+    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.35);
+
+    /* Typography */
+    --font-primary: 'Inter', sans-serif;
+    --font-mono: 'Fira Code', monospace;
+  }
+
+  /* Animation Durations */
+  :root, .minimalist, .cyber, .academia {
+    --duration-fast: 0.2s;
+    --duration-normal: 0.3s;
+    --duration-slow: 0.4s;
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased transition-all duration-500;
+    font-family: var(--font-primary);
+  }
+
+  /* Custom scrollbar for admin interface */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-muted/50;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary/30 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary/50;
+  }
+}
+
+@layer components {
+  /* Theme-Responsive Admin Components */
+  .admin-card {
+    @apply bg-card text-card-foreground border shadow-[var(--shadow-card)] transition-all duration-300 hover:shadow-[var(--shadow-hover)] hover:-translate-y-1;
+    border-radius: var(--radius);
+  }
+
+  /* Stat Card Variants */
+  .stat-card {
+    @apply admin-card p-6 relative overflow-hidden;
+    background: var(--gradient-card);
+  }
+
+  .stat-card-primary {
+    @apply stat-card border-primary/20 hover:border-primary/40;
+  }
+
+  .stat-card-secondary {
+    @apply stat-card border-secondary/20 hover:border-secondary/40;
+  }
+
+  .stat-card-accent {
+    @apply stat-card border-accent/20 hover:border-accent/40;
+  }
+
+  /* Theme-Specific Card Decorations */
+  .cyber .stat-card::before {
+    content: '';
+    @apply absolute top-0 left-0 w-full h-0.5;
+    background: var(--gradient-primary);
+    box-shadow: 0 0 10px hsl(var(--primary) / 0.5);
+  }
+
+  .academia .stat-card {
+    @apply relative;
+    background-image: 
+      linear-gradient(45deg, transparent 49%, hsl(var(--border)) 49%, hsl(var(--border)) 51%, transparent 51%),
+      var(--gradient-card);
+    background-size: 20px 20px, 100% 100%;
+    background-position: 0 0, 0 0;
+  }
+
+  /* Button Variants */
+  .btn-admin {
+    @apply px-6 py-3 font-medium transition-all duration-300 hover:scale-105 focus:ring-2 focus:ring-primary/20 focus:outline-none text-primary-foreground;
+    background: var(--gradient-primary);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+  }
+
+  .btn-admin:hover {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 font-medium transition-all duration-300 hover:scale-105 focus:ring-2 focus:ring-secondary/20 focus:outline-none text-secondary-foreground;
+    background: var(--gradient-secondary);
+    border-radius: var(--radius);
+  }
+
+  /* Theme-Specific Chat Bubbles */
+  .message-user {
+    @apply px-4 py-3 max-w-xs ml-auto text-primary-foreground;
+    background: var(--gradient-primary);
+    border-radius: var(--radius);
+    border-bottom-right-radius: 0.25rem;
+  }
+
+  .message-ai {
+    @apply px-4 py-3 max-w-xs border shadow-sm text-card-foreground;
+    background: var(--gradient-card);
+    border-radius: var(--radius);
+    border-bottom-left-radius: 0.25rem;
+  }
+
+  /* Cyber Theme Effects */
+  .cyber .message-user {
+    @apply relative;
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.4);
+  }
+
+  .cyber .message-ai {
+    @apply relative;
+    box-shadow: 0 0 15px hsl(var(--accent) / 0.2);
+  }
+
+  .cyber .message-user::before,
+  .cyber .message-ai::before {
+    content: '';
+    @apply absolute inset-0 rounded-lg opacity-20;
+    background: linear-gradient(45deg, transparent 30%, hsl(var(--primary)) 50%, transparent 70%);
+    animation: data-stream 3s linear infinite;
+  }
+
+  /* Academia Theme Decorative Elements */
+  .academia .message-ai {
+    @apply relative;
+    border: 2px solid hsl(var(--border));
+  }
+
+  .academia .message-ai::before {
+    content: '❝';
+    @apply absolute -top-2 -left-2 text-2xl text-accent;
+  }
+
+  /* Loading Shimmer Effect */
+  .shimmer {
+    @apply animate-pulse;
+    background: linear-gradient(90deg, hsl(var(--muted)) 25%, hsl(var(--muted)) 50%, hsl(var(--muted)) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 2s ease-in-out infinite;
+  }
+
+  /* Typing Dots Animation */
+  .typing-dots {
+    @apply flex space-x-1;
+  }
+
+  .typing-dot {
+    @apply w-2 h-2 rounded-full animate-bounce;
+    background-color: hsl(var(--muted-foreground));
+  }
+
+  .typing-dot:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+
+  .typing-dot:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+
+  /* Theme Switcher Styles */
+  .theme-option {
+    @apply p-4 rounded-lg border-2 cursor-pointer transition-all duration-300 hover:scale-105;
+  }
+
+  .theme-option.active {
+    @apply ring-2 ring-primary shadow-[var(--shadow-glow)];
+  }
+
+  /* Cyber Animations */
+  @keyframes data-stream {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% { box-shadow: 0 0 20px hsl(var(--primary) / 0.3); }
+    50% { box-shadow: 0 0 40px hsl(var(--primary) / 0.6); }
+  }
+
+  .cyber .admin-card {
+    animation: glow-pulse 3s ease-in-out infinite;
+  }
+}
