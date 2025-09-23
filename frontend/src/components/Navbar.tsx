@@ -1,14 +1,25 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { BarChart3, MessageSquare, GraduationCap, Palette } from "lucide-react";
+import { BarChart3, MessageSquare, GraduationCap, Palette, LogOut, User } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useAuth } from "@/hooks/useApi";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { theme } = useTheme();
+  const { logout, getStoredUser } = useAuth();
   const [showThemeSwitcher, setShowThemeSwitcher] = useState(false);
+  
+  const user = getStoredUser();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/auth");
+  };
 
   const navItems = [
     { path: "/dashboard", icon: BarChart3, label: "Dashboard" },
@@ -81,7 +92,6 @@ const Navbar = () => {
               );
             })}
             
-            {/* Theme Switcher Button */}
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -92,6 +102,27 @@ const Navbar = () => {
               <Palette className="w-4 h-4" />
               <span className="text-sm font-medium">Theme</span>
             </motion.button>
+
+            {/* User Menu */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-4 py-2 text-muted-foreground hover:text-foreground hover:bg-muted/50 flex items-center space-x-2 transition-all duration-200"
+                  style={{ borderRadius: 'var(--radius)' }}
+                >
+                  <User className="w-4 h-4" />
+                  <span className="text-sm font-medium">{user?.name || 'User'}</span>
+                </motion.button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuItem onClick={handleLogout} className="text-red-600 dark:text-red-400">
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>

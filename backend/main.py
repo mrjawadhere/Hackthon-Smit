@@ -17,7 +17,12 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  
+    allow_origins=[
+        "http://127.0.0.1:8080",
+        "http://localhost:8080",
+        "http://127.0.0.1:8081",
+        "http://localhost:8081",
+    ],  # Frontend dev URLs
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -32,5 +37,5 @@ app.include_router(analytics.analytics_router, prefix="/analytics", tags=["Analy
 if __name__ == "__main__":
     # for local dev only
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=5050, reload=True)
 

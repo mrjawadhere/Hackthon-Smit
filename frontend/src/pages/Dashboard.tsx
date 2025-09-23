@@ -1,54 +1,64 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Users, Building2, UserPlus, TrendingUp } from "lucide-react";
+import { Users, Building2, UserPlus, TrendingUp, RefreshCw } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 import Navbar from "@/components/Navbar";
 import StatCard from "@/components/StatCard";
 import ThemePreview from "@/components/ThemePreview";
+import { useAnalytics, useRefreshAnalytics } from "@/hooks/useApi";
+import { toast } from "sonner";
 
-// Mock data - replace with real API calls
-const mockStats = {
-  totalStudents: 1247,
-  departments: 8,
-  recentOnboardings: 23,
-  activeLastWeek: 892
-};
-
-const mockDepartmentData = [
-  { name: "Computer Science", value: 324, color: "#2563eb" },
-  { name: "Engineering", value: 298, color: "#06b6d4" },
-  { name: "Business", value: 256, color: "#8b5cf6" },
-  { name: "Arts", value: 189, color: "#f59e0b" },
-  { name: "Sciences", value: 156, color: "#10b981" },
-  { name: "Medicine", value: 24, color: "#ef4444" }
-];
-
-const mockOnboardingData = [
-  { day: "Mon", count: 12 },
-  { day: "Tue", count: 8 },
-  { day: "Wed", count: 15 },
-  { day: "Thu", count: 6 },
-  { day: "Fri", count: 18 },
-  { day: "Sat", count: 4 },
-  { day: "Sun", count: 2 }
-];
-
-const mockRecentStudents = [
-  { id: 1001, name: "Emma Johnson", department: "Computer Science", onboarded: "2024-01-15" },
-  { id: 1002, name: "Michael Chen", department: "Engineering", onboarded: "2024-01-14" },
-  { id: 1003, name: "Sarah Williams", department: "Business", onboarded: "2024-01-14" },
-  { id: 1004, name: "David Rodriguez", department: "Sciences", onboarded: "2024-01-13" },
-  { id: 1005, name: "Lisa Thompson", department: "Arts", onboarded: "2024-01-13" }
+// Color palette for charts
+const CHART_COLORS = [
+  "#2563eb", "#06b6d4", "#8b5cf6", "#f59e0b", 
+  "#10b981", "#ef4444", "#f97316", "#84cc16"
 ];
 
 const Dashboard = () => {
-  const [loading, setLoading] = useState(true);
+  const {
+    totalStudents,
+    studentsByDepartment,
+    recentStudents,
+    activeStudents,
+    isLoading,
+    isError
+  } = useAnalytics();
+  
+  const refreshAnalytics = useRefreshAnalytics();
 
+  // Transform department data for pie chart
+  const departmentChartData = useMemo(() => {
+    if (!studentsByDepartment.data?.results) return [];
+    
+    return studentsByDepartment.data.results.map((dept, index) => ({
+      name: dept.department,
+      value: dept.count,
+      color: CHART_COLORS[index % CHART_COLORS.length]
+    }));
+  }, [studentsByDepartment.data]);
+
+  // Generate mock onboarding data for the week (can be enhanced later with real API)
+  const mockOnboardingData = [
+    { day: "Mon", count: 12 },
+    { day: "Tue", count: 8 },
+    { day: "Wed", count: 15 },
+    { day: "Thu", count: 6 },
+    { day: "Fri", count: 18 },
+    { day: "Sat", count: 4 },
+    { day: "Sun", count: 2 }
+  ];
+
+  // Handle refresh button
+  const handleRefresh = () => {
+    refreshAnalytics();
+  };
+
+  // Show error toast if any API calls fail
   useEffect(() => {
-    // Simulate API loading
-    const timer = setTimeout(() => setLoading(false), 1500);
-    return () => clearTimeout(timer);
-  }, []);
+    if (isError) {
+      toast.error("Failed to load some dashboard data. Please check your connection.");
+    }
+  }, [isError]);
 
   return (
     <motion.div
@@ -64,10 +74,22 @@ const Dashboard = () => {
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.4 }}
-          className="mb-8"
+          className="mb-8 flex items-center justify-between"
         >
-          <h1 className="text-3xl font-bold text-foreground mb-2">Campus Analytics Dashboard</h1>
-          <p className="text-muted-foreground">Real-time insights into campus operations and student data</p>
+          <div>
+            <h1 className="text-3xl font-bold text-foreground mb-2">Campus Analytics Dashboard</h1>
+            <p className="text-muted-foreground">Real-time insights into campus operations and student data</p>
+          </div>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleRefresh}
+            disabled={isLoading}
+            className="flex items-center space-x-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
+          >
+            <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
+            <span>Refresh</span>
+          </motion.button>
         </motion.div>
 
         {/* Theme Preview */}
@@ -77,35 +99,35 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <StatCard
             title="Total Students"
-            value={loading ? "..." : mockStats.totalStudents}
+            value={isLoading ? "..." : totalStudents.data?.total_students ?? 0}
             icon={Users}
             color="primary"
             delay={0}
-            loading={loading}
+            loading={isLoading}
           />
           <StatCard
             title="Departments"
-            value={loading ? "..." : mockStats.departments}
+            value={isLoading ? "..." : studentsByDepartment.data?.total_departments ?? 0}
             icon={Building2}
             color="secondary"
             delay={0.1}
-            loading={loading}
+            loading={isLoading}
           />
           <StatCard
             title="Recent Onboardings"
-            value={loading ? "..." : mockStats.recentOnboardings}
+            value={isLoading ? "..." : recentStudents.data?.count ?? 0}
             icon={UserPlus}
             color="accent"
             delay={0.2}
-            loading={loading}
+            loading={isLoading}
           />
           <StatCard
             title="Active Last 7 Days"
-            value={loading ? "..." : mockStats.activeLastWeek}
+            value={isLoading ? "..." : activeStudents.data?.count ?? 0}
             icon={TrendingUp}
             color="primary"
             delay={0.3}
-            loading={loading}
+            loading={isLoading}
           />
         </div>
 
@@ -119,15 +141,15 @@ const Dashboard = () => {
             className="admin-card p-6"
           >
             <h3 className="text-lg font-semibold text-foreground mb-4">Students by Department</h3>
-            {loading ? (
+            {isLoading ? (
               <div className="h-64 flex items-center justify-center">
                 <div className="shimmer h-48 w-48 rounded-full" />
               </div>
-            ) : (
+            ) : departmentChartData.length > 0 ? (
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
                   <Pie
-                    data={mockDepartmentData}
+                    data={departmentChartData}
                     cx="50%"
                     cy="50%"
                     innerRadius={60}
@@ -137,7 +159,7 @@ const Dashboard = () => {
                     animationBegin={0}
                     animationDuration={800}
                   >
-                    {mockDepartmentData.map((entry, index) => (
+                    {departmentChartData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
@@ -151,6 +173,10 @@ const Dashboard = () => {
                   <Legend />
                 </PieChart>
               </ResponsiveContainer>
+            ) : (
+              <div className="h-64 flex items-center justify-center text-muted-foreground">
+                No department data available
+              </div>
             )}
           </motion.div>
 
@@ -162,7 +188,7 @@ const Dashboard = () => {
             className="admin-card p-6"
           >
             <h3 className="text-lg font-semibold text-foreground mb-4">Onboardings This Week</h3>
-            {loading ? (
+            {isLoading ? (
               <div className="h-64 flex items-center justify-end space-x-2">
                 {Array.from({ length: 7 }).map((_, i) => (
                   <div key={i} className="shimmer w-8 h-32 rounded" />
@@ -209,7 +235,7 @@ const Dashboard = () => {
         >
           <h3 className="text-lg font-semibold text-foreground mb-4">Recent Student Onboardings</h3>
           
-          {loading ? (
+          {isLoading ? (
             <div className="space-y-3">
               {Array.from({ length: 5 }).map((_, i) => (
                 <div key={i} className="flex items-center space-x-4">
@@ -220,7 +246,7 @@ const Dashboard = () => {
                 </div>
               ))}
             </div>
-          ) : (
+          ) : recentStudents.data?.students && recentStudents.data.students.length > 0 ? (
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
@@ -228,11 +254,11 @@ const Dashboard = () => {
                     <th className="text-left py-3 px-4 text-sm font-medium text-muted-foreground">ID</th>
                     <th className="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Name</th>
                     <th className="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Department</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Onboarded</th>
+                    <th className="text-left py-3 px-4 text-sm font-medium text-muted-foreground">Email</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {mockRecentStudents.map((student, index) => (
+                  {recentStudents.data.students.map((student, index) => (
                     <motion.tr
                       key={student.id}
                       initial={{ opacity: 0, x: -20 }}
@@ -242,12 +268,16 @@ const Dashboard = () => {
                     >
                       <td className="py-3 px-4 text-sm text-muted-foreground">#{student.id}</td>
                       <td className="py-3 px-4 text-sm font-medium text-foreground">{student.name}</td>
-                      <td className="py-3 px-4 text-sm text-muted-foreground">{student.department}</td>
-                      <td className="py-3 px-4 text-sm text-muted-foreground">{student.onboarded}</td>
+                      <td className="py-3 px-4 text-sm text-muted-foreground">{student.department || 'N/A'}</td>
+                      <td className="py-3 px-4 text-sm text-muted-foreground">{student.email}</td>
                     </motion.tr>
                   ))}
                 </tbody>
               </table>
+            </div>
+          ) : (
+            <div className="text-center py-8 text-muted-foreground">
+              No recent students data available
             </div>
           )}
         </motion.div>

@@ -1,0 +1,14 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run backend (FastAPI) on 5050",
+			"type": "shell",
+			"command": "python J:\\Hackthon-Smit\\backend\\main.py",
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		}
+	]
+}

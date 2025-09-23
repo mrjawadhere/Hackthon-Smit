@@ -60,8 +60,21 @@ const Chat = () => {
     setInput("");
 
     try {
-      // Send message to backend - handled by the useChat hook
+      // Send message to backend - this will be handled by the useChat hook
+      // For now, we'll simulate a response since the chat endpoint might not be working
       sendMessage({ user_input: currentInput });
+      
+      // Add a simulated response for demo purposes
+      setTimeout(() => {
+        const aiMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          content: `I received your message: "${currentInput}". The student management AI agent is currently being set up. You can try asking about student management, campus information, or analytics.`,
+          role: "assistant",
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, aiMessage]);
+      }, 1000);
+      
     } catch (error) {
       // Remove optimistic message on error
       setMessages(prev => prev.filter(msg => msg.id !== userMessage.id));
@@ -250,7 +263,7 @@ const Chat = () => {
             </motion.button>
           </form>
         </div>
-      </motion.div>
+      </div>
     </motion.div>
   );
 };
